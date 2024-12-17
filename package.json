@@ -1,0 +1,25 @@
+{
+  "name": "@musasutisna/nodco-rabbitmq",
+  "version": "1.0.0",
+  "description": "make easier configuration nodejs configuration intergration with rabbitmq",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/musasutisna/nodco-rabbitmq.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Musa Sutisna",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/musasutisna/nodco-rabbitmq/issues"
+  },
+  "homepage": "https://github.com/musasutisna/nodco-rabbitmq#readme",
+  "dependencies": {
+    "amqplib": "^0.10.5"
+  }
+}
