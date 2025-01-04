@@ -94,10 +94,49 @@ module.exports = function nodcoRabbitmqConfig(config) {
     }
   }
 
+  /**
+   * Limit message retries using DLX (Dead Letter Exchange) properties,
+   * and acknowledge messages once the retry limit is reached.
+   * Additionally, support republishing messages to a different exchange, if required.
+   *
+   * @param   object
+   * @param   object
+   * @param   number
+   * @param   object    { exchange, key }
+   * @return  boolean   false on message blocked
+   */
+  async function retries(channel, msg, limit = 10, republish = null) {
+    let msgCount = 0;
+  
+    if (msg.properties) {
+      if (msg.properties.headers['x-death'] && msg.properties.headers['x-death'][0]) {
+        msgCount = msg.properties.headers['x-death'][0].count;
+      }
+    }
+  
+    if (msgCount > limit) {  
+      if (republish) {
+        await channel.publish(
+          republish.exchange,
+          republish.key,
+          msg.content,
+          { persistent: true }
+        )
+      }
+
+      await channel.ack(msg);
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   return {
     client,
     channel,
     connect,
+    retries,
     close
   };
 };
